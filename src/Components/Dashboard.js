@@ -1,43 +1,34 @@
 import axios from 'axios';
-import React, { useContext, useEffect, useState } from 'react';
-import UserContext from '../Context/UserContext';
+import React, {useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const DashBoard = ()=>{
 
     const[user,setUser] = useState({});
-    const {token,setToken} = useContext(UserContext);
-    const {id,setId} = useState("");
     const navigate = useNavigate();
-
+    let id_from_local_storage;
     useEffect(()=>{
-        if(token === ""){
             let token_from_local_storage = localStorage.getItem("token");
-            let id_from_local_storage = localStorage.getItem("id");
-            if(token_from_local_storage){
-                setToken(token_from_local_storage);
-                setId(id_from_local_storage);
+            if(!token_from_local_storage){
+                navigate("/");
             }else{
-                navigate("/")
+                id_from_local_storage = localStorage.getItem("id");
+                localStorage.clear();
             }
-        }
+            
     },[])
 
     useEffect(()=>{
         getUserDetails();
-        setToken("");
-        setId("");
     },[])
 
     async function getUserDetails(){
         try {
-            const response = await axios.get(`https://dummyjson.com/users/${id}`,{
-            headers:{
-                Authorization: `Bearer ${token}`
-            }})
-            setUser(response);
+            const response = await axios.get(`https://dummyjson.com/users/${id_from_local_storage}`)
+            console.log(response.data);
+            setUser(response.data);
         } catch (error) {
-            alert(error)
+            alert(error.response.data.message);
         }
     }
   
@@ -51,6 +42,12 @@ const DashBoard = ()=>{
                     <h3>First Nmae : {user.firstName}</h3>
                     <h3>Last Name : {user.lastName}</h3>
                     <h3>Gender : {user.gender}</h3>
+                    <h3>Date of Birth : {user.birthDate}</h3>
+                    <h3>Blood group : {user.bloodGroup}</h3>
+                    <h3>Age : {user.age}</h3>
+                    <h3>Email : {user.email}</h3>
+                    <h3>Mobile : {user.phone}</h3>
+                    
                 </div>   
                 )
             } 

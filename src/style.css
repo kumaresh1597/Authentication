@@ -10,6 +10,8 @@
     align-items: center;
 }
 
+
+
 .log-in-div{
     width: 400px;
     height: 60vh;
@@ -17,6 +19,11 @@
     flex-direction: column;
     justify-content: space-evenly;
     border: 2px solid rgb(219,219,219);
+}
+
+.logo>p{
+    text-align: center;
+    font-size: large;
 }
 
 .input-div{

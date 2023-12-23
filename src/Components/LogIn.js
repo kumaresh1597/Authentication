@@ -1,5 +1,4 @@
-import React,{useContext, useEffect, useState} from 'react'
-import UserContext from '../Context/UserContext';
+import React,{useState} from 'react'
 import { useNavigate } from 'react-router-dom';
 
 const LogIn = ()=>{
@@ -9,13 +8,7 @@ const LogIn = ()=>{
 
    const navigate = useNavigate();
 
-    const {token,setToken} = useContext(UserContext);
 
-    useEffect(()=>{
-        if(token || localStorage.getItem("token")){
-            navigate("/dashboard");
-        }
-    },[])
 
     function updateInput(e){
         let x = e.target.name
@@ -44,7 +37,6 @@ const LogIn = ()=>{
             .then(res => res.json())
             .then(res=>(
                 console.log(res),
-                setToken(res.token),
                 localStorage.setItem("token",res.token),
                 localStorage.setItem("id",res.id),
                 setUser({email: "", password: ""}),
@@ -52,7 +44,7 @@ const LogIn = ()=>{
                 navigate("/dashboard")
             ));
         } catch (error) {
-            console.log(error);
+            alert(error.response.data.message);
         }
 
     }
